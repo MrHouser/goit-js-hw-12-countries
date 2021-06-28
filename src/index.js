@@ -23,8 +23,12 @@ function inputHandler() {
     refs.countriesListRef.innerHTML = '';
     refs.countryContainerRef.innerHTML = '';
     fetchCountries(refs.inputRef.value).
-        then(handleResult)
-        .catch(handleError);
+        then(res => {
+            if (res.status === 404) {
+                handleError();
+                return;
+            } else handleResult(res);
+        });
 }
 
 
@@ -50,6 +54,6 @@ function handleResult(res) {
 }
 
 function handleError() {
-    alert('Country not found!');
+    alert({text: 'Country not found!'});
 }
 
