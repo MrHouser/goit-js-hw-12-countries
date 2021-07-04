@@ -1,14 +1,15 @@
 import fetchCountries from "./fetchCountries";
 import countriesTemplate from "./countryList.hbs";
 import countryTemplate from "./country.hbs";
-import { defaultModules } from '@pnotify/core';
-import * as PNotifyBootstrap4 from '@pnotify/bootstrap4';
-import { alert, notice, info, success, error } from '@pnotify/core';
+import { alert } from '@pnotify/core';
+import notifications from "./notifications";
+import "@pnotify/core/dist/PNotify.css";
+import "@pnotify/core/dist/BrightTheme.css";
+import "@pnotify/mobile/dist/PNotifyMobile.css";
+import "@pnotify/countdown/dist/PNotifyCountdown.css";
+import "./styles.css";
 
-defaultModules.set(PNotifyBootstrap4, {});
 
-// const myErr = error({ text: 'qweqwe!' });
-// myErr.fire;
 
 const debounce = require('lodash.debounce');
 const refs = {
@@ -45,15 +46,17 @@ function renderCountry(country) {
 function handleResult(res) {
     if (res.length === 1) {
         renderCountry(res);
+        alert(notifications.found);
     } else if (res.length > 10) {
-        alert('enter valid country name');
+        alert(notifications.foundTooMany);
         return;
     } else {
         renderCountries(res);
+        alert(notifications.foundMany);
     }
 }
 
-function handleError() {
-    alert({text: 'Country not found!'});
-}
 
+function handleError() {
+    alert(notifications.notFound);
+}
